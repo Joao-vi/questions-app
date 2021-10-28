@@ -6,16 +6,16 @@ import {
   Text,
   Avatar,
   IconButton,
-  Icon,
+  useBreakpointValue,
+  useBreakpoint,
 } from "@chakra-ui/react";
-
-import { BsSun, BsMoon } from "react-icons/bs";
 
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 
 export function Header() {
   const { toggleColorMode } = useColorMode();
+  const size = useBreakpoint();
   return (
     <Box
       mb="2"
@@ -33,15 +33,20 @@ export function Header() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <HStack spacing="10">
-          <Heading display="inline" border="1px" px="6px" borderRadius={5}>
+        <HStack
+          spacing={["0", "0", "10"]}
+          flexDirection={["column", "column", "row"]}
+        >
+          <Heading display="inline" border="1px" borderRadius={5}>
             Q
             <Text as="span" color="teal.300" fontSize="4xl">
               4
             </Text>
             Y
           </Heading>
-          <Heading>Question for You.</Heading>
+          <Heading fontSize={["24px", "28px", "32px"]}>
+            Question for You.
+          </Heading>
         </HStack>
         <HStack borderLeft="1px" pl="4" borderColor="gray.500" spacing="3">
           <IconButton
@@ -54,14 +59,16 @@ export function Header() {
           ></IconButton>
           <Flex alignItems="flex-start">
             <Avatar name="Kola Tioluwani" />
-            <Box pl="1">
-              <Text fontSize="md" fontWeight="medium">
-                Kola Tioluwani
-              </Text>
-              <Text fontSize="sm" pt={0}>
-                Japão
-              </Text>
-            </Box>
+            {size === "base" ? null : (
+              <Box pl="1">
+                <Text fontSize="md" fontWeight="medium">
+                  Kola Tioluwani
+                </Text>
+                <Text fontSize="sm" pt={0}>
+                  Japão
+                </Text>
+              </Box>
+            )}
           </Flex>
         </HStack>
       </Flex>

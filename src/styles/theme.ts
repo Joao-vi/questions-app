@@ -9,6 +9,9 @@ const config: ThemeConfig = {
 
 const styles = {
   global: (props: GlobalStyleProps) => ({
+    html: {
+      fontSize: ["92%", "100%", "100%"],
+    },
     body: {
       bg: mode("gray.50", "gray.800")(props),
       color: mode("gray.700", "gray.100")(props),

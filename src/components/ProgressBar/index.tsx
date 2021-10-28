@@ -3,7 +3,7 @@ import { useColorModeValue } from "@chakra-ui/react";
 
 export function ProgressBar() {
   return (
-    <Box as="section" maxW={1200} mx="auto" w="96%">
+    <Box as="section" maxW={1200} mx="auto" w="94%">
       <Flex
         alignItems="center"
         justifyContent="space-evenly"
