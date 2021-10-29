@@ -1,5 +1,6 @@
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Box, Flex } from "@chakra-ui/layout";
 import { useColorModeValue } from "@chakra-ui/react";
+import { TextProgressBar } from "./textProgessBar";
 
 export function ProgressBar() {
   return (
@@ -12,33 +13,9 @@ export function ProgressBar() {
         borderRadius={10}
         boxShadow="sm"
       >
-        <Text
-          as="span"
-          fontWeight="bold"
-          color={useColorModeValue("teal.500", "teal.300")}
-          border="1px"
-          borderColor="teal.400"
-          px="2"
-          py="1"
-          boxShadow="sm"
-          borderRadius={5}
-        >
-          Cadastro
-        </Text>
-        <Text
-          as="span"
-          fontWeight="normal"
-          color={useColorModeValue("gray.400", "gray.500")}
-        >
-          Perguntas
-        </Text>
-        <Text
-          as="span"
-          fontWeight="normal"
-          color={useColorModeValue("gray.400", "gray.500")}
-        >
-          Resultado
-        </Text>
+        <TextProgressBar path="/">Registro</TextProgressBar>
+        <TextProgressBar path="/questions">Perguntas</TextProgressBar>
+        <TextProgressBar path="/teste">Resultado</TextProgressBar>
       </Flex>
     </Box>
   );

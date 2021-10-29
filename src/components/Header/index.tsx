@@ -1,20 +1,14 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Heading,
-  Text,
-  Avatar,
-  IconButton,
-  useBreakpointValue,
-  useBreakpoint,
-} from "@chakra-ui/react";
+/* prettier-ignore */
+import {Box,Flex,HStack,Heading,Text,Avatar,IconButton,useBreakpoint,} from "@chakra-ui/react";
 
 import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { useContext } from "react";
+import { userInputsContext } from "../../context/userInputsContext";
 
 export function Header() {
   const { toggleColorMode } = useColorMode();
+  const { userInputs } = useContext(userInputsContext);
   const size = useBreakpoint();
   return (
     <Box
@@ -56,22 +50,38 @@ export function Header() {
             aria-label="Modo claro/escuro"
             bgColor={useColorModeValue("transparent", "teal")}
             icon={useColorModeValue(<SunIcon />, <MoonIcon />)}
-          ></IconButton>
-          <Flex alignItems="flex-start">
-            <Avatar name="Kola Tioluwani" />
-            {size === "base" ? null : (
-              <Box pl="1">
-                <Text fontSize="md" fontWeight="medium">
-                  Kola Tioluwani
-                </Text>
-                <Text fontSize="sm" pt={0}>
-                  Japão
-                </Text>
-              </Box>
-            )}
-          </Flex>
+          />
+          {userInputs && (
+            <Flex alignItems="flex-start">
+              <Avatar name={userInputs?.name} />
+              {size === "base" ? null : (
+                <Box pl="1">
+                  <Text fontSize="md" fontWeight="medium">
+                    {userInputs?.name}
+                  </Text>
+                  <Text fontSize="sm" pt={0}>
+                    {userInputs?.city}
+                  </Text>
+                </Box>
+              )}
+            </Flex>
+          )}
         </HStack>
       </Flex>
     </Box>
   );
 }
+
+/*<Flex alignItems="flex-start">
+                <Avatar name={userInputs.name} />
+                {size === "base" ? null : (
+                  <Box pl="1">
+                    <Text fontSize="md" fontWeight="medium">
+                      {userInputs.name}
+                    </Text>
+                    <Text fontSize="sm" pt={0}>
+                      {userInputs.city}
+                    </Text>
+                  </Box>
+                )}
+              </Flex> */

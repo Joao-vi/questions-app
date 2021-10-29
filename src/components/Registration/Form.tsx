@@ -7,11 +7,15 @@ import {
   SimpleGrid,
   Grid,
 } from "@chakra-ui/react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
 import { GrFormNextLink } from "react-icons/gr";
 
-import { InputForm } from "./inputForm";
+import { useContext, useState } from "react";
+import { userInputsContext } from "../../context/userInputsContext";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { InputForm } from "./inputForm";
+import { CheckNumberQuestionsModal } from "../Modal/checkNumberQuestions";
 
 interface InputData {
   name: string;
@@ -21,16 +25,36 @@ interface InputData {
 }
 
 export function FormRegistration() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<InputData>();
-  const onSubmit: SubmitHandler<InputData> = (data) => {
-    console.log(data);
+  /* prettier-ignore */
+  const {register,handleSubmit,formState: { errors }} = useForm<InputData>();
+  const [isOpen, setIsOpen] = useState(false);
+  const { queryQuestions } = useContext(userInputsContext);
+
+  // Preciso arranjar uma maneiro de o usuario validar por meio do modal e depois mandar vir em handleSubmitForm
+  const handleSubmitForm: SubmitHandler<InputData> = (data) => {
+    console.log("eu");
+    queryQuestions(data);
   };
+
   return (
-    <Stack as="form" spacing="2" pt="20px" onSubmit={handleSubmit(onSubmit)}>
+    <Stack
+      as="form"
+      spacing="2"
+      pt="20px"
+      onSubmit={handleSubmit(handleSubmitForm)}
+    >
+      <CheckNumberQuestionsModal isOpen={isOpen}>
+        <Button
+          colorScheme="red"
+          bgColor="red.500"
+          onClick={() => setIsOpen((oldState) => !oldState)}
+        >
+          Cancelar
+        </Button>
+        <Button type="submit" colorScheme="teal" bgColor="teal.400">
+          Confirmar
+        </Button>
+      </CheckNumberQuestionsModal>
       <SimpleGrid columns={2} minChildWidth="200px" spacing="3">
         <VStack>
           <InputForm id="name" label="Nome" type="text" register={register} />
@@ -74,7 +98,8 @@ export function FormRegistration() {
         colorScheme="teal"
         backgroundColor="teal.400"
         alignSelf="end"
-        type="submit"
+        type="button"
+        onClick={() => setIsOpen((oldState) => !oldState)}
         rightIcon={<Icon as={GrFormNextLink} />}
       >
         Continuar

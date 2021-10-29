@@ -13,12 +13,9 @@ import { useEffect } from "react";
 
 export function InstructionsModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  /* prettier-ignore */
   useEffect(() => {
-    setTimeout(() => {
-      onOpen();
-    }, 1000);
-  }, [onOpen]);
+    setTimeout(() => {onOpen();}, 1000);}, [onOpen]);
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
