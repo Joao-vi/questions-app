@@ -21,7 +21,7 @@ interface IQuestionType {
 
 type IUserInputsContext = {
   userInputs: InputData | undefined;
-  questions: IQuestionType[] | undefined;
+  questions: IQuestionType[];
   queryQuestions: SubmitHandler<InputData>;
 };
 
@@ -35,14 +35,25 @@ type UserInputContextProviderProps = {
 export function UserInputContextProvider({children}: UserInputContextProviderProps) {
   const history = useHistory();
   const [userInputs, setUserInputs] = useState<InputData>();
-  const [questions, SetQuestions] = useState();
+  const [questions, setQuestions] = useState<IQuestionType[]>([]);
 
 
-  // Aqui não sei se esta certo a requisição.
   const queryQuestions: SubmitHandler<InputData> = async (userData) => {
     setUserInputs(userData);
-    const {data} = await api.get(`?amount=${userData.numberQuestions}`)     
-    SetQuestions(data.results);
+    // Como todas as opções de respostas não vieram em uma mesma variavel do banco de dados, preciso coloca-las agora para poder usar no componente RadioCard.
+    const {data:{results}} = await api.get(`?amount=${userData.numberQuestions}`)   
+      const modifiedResults = results.map((question :any)=>{
+        return{
+          category: question.category,
+          correct_answer: question.correct_answer,
+          difficulty: question.difficulty,
+          question: question.question,
+          type: question.type,
+          incorrect_answers: [question.correct_answer,...question.incorrect_answers],
+        }
+      })
+      // Agora que consegui colocar todas as opções de resposta na variavel [incorrect_answers] irei dar o setQuestions
+      setQuestions(modifiedResults);
       history.push("/questions");
   };
 
@@ -54,3 +65,7 @@ export function UserInputContextProvider({children}: UserInputContextProviderPro
     </userInputsContext.Provider>
   );
 }
+
+/*
+
+*/

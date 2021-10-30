@@ -1,17 +1,13 @@
-import {
-  Box,
-  Flex,
-  useColorModeValue,
-  Text,
-  useRadioGroup,
-  VStack,
-} from "@chakra-ui/react";
-import { useContext, useState } from "react";
+/* prettier-ignore */
+import {Box,Flex,useColorModeValue,Text,useRadioGroup,VStack,Button,} from "@chakra-ui/react";
+import { FormEvent, useContext, useState } from "react";
+
 import { userInputsContext } from "../context/userInputsContext";
 
 import { Header } from "../components/Header";
 import { ProgressBar } from "../components/ProgressBar";
 import { RadioCard } from "../components/Question/radioCard";
+import { Footer } from "../components/Footer";
 
 interface IUserAnswersQuestions {
   category: string;
@@ -24,51 +20,121 @@ interface IUserAnswersQuestions {
 export function QuestionsPage() {
   const { questions } = useContext(userInputsContext);
   /* prettier-ignore */
-  const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>();
+  const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>([]);
+  const [currentAnswer, setCurrentAnswer] = useState<string>("");
+  const [indexArray, setIndexArray] = useState(0);
 
-  questions && console.log();
-
-  const options = ["react", "vue", "svelte"];
-  console.log(questions);
+  const totalQuestions = questions.length - 1;
 
   const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "framework",
-    onChange: console.log,
+    name: "questions",
+    onChange: handleSelectedAnswer,
   });
-  // !![Não sei extamente oque faz] :
+
   const group = getRootProps();
+
+  //--------------------------------------------------------------------------------------------------------
+
+  // Essa funçao é responsavel por armazenar a escolha de resposta atual em um estado.
+  // Ela é ativada na [linha 37], toda vez que o usuario escolhe outra resposta armazenamos sua respota em um estado
+  // para posteriormente salvarmos em [--handleSelectedAnswer--].
+
+  function handleSelectedAnswer(selectAnswer: string) {
+    setCurrentAnswer(selectAnswer);
+  }
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  // --------------------------------------------------------------------------------------------------------
+
+  function handleSaveAnswers(event: FormEvent<HTMLDivElement>) {
+    event.preventDefault();
+
+    // Assim que usuario clica em confirmar salvamos a resposta em [userAnswer] e com ela os dados da pergunta,
+    // depois fazemos um spred(...) pra salvar as respostas anteriores. Se nao iria sobrepor as repostas no estado.
+    setUserAnswerQuestions([
+      {
+        userAnswer: currentAnswer,
+        category: questions[indexArray].category,
+        question: questions[indexArray].question,
+        correct_answer: questions[indexArray].correct_answer,
+        incorrect_answers: questions[indexArray].incorrect_answers,
+      },
+      ...userAnswerQuestions,
+    ]);
+
+    // Depois que salvei a respota da pergunta, mando para seguir para proxima questao usando o estado indexArray
+    if (indexArray < totalQuestions) {
+      setIndexArray((oldState) => oldState + 1);
+    }
+  }
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  console.log(userAnswerQuestions);
 
   return (
     <>
       <Flex as="main" flexDir="column" w="100vw" h="100vh">
         <Header />
         <ProgressBar />
-        <Box as="section" w="94%" maxW={1200} mx="auto">
+        <Box
+          as="section"
+          w="94%"
+          maxW={1200}
+          mx="auto"
+          mt="2"
+          marginBottom="auto"
+        >
           <Flex
             as="form"
             flexDirection="column"
+            onSubmit={handleSaveAnswers}
             p="5"
             borderRadius={10}
             boxShadow="sm"
             bgColor={useColorModeValue("gray.100", "gray.700")}
           >
-            <Text>Qual é a raiz quadrada de 50 ? </Text>
-            <VStack {...group}>
-              {questions &&
-                questions[0].incorrect_answers.map((value) => {
-                  // Aqui ira criar as props dos inputs automaticamente, mudando entre elas apenas o [value]
-                  const radio = getRadioProps({ value });
+            {questions && (
+              <>
+                <Text as="h1" fontSize="2xl">
+                  {" "}
+                  {questions[indexArray].question}{" "}
+                </Text>
+                <VStack my="5" ml="2" alignItems="normal" {...group}>
+                  {questions &&
+                    questions[indexArray].incorrect_answers.map(
+                      (value: any) => {
+                        // Aqui ira criar as props dos inputs automaticamente, mudando entre elas apenas o [value]
+                        const radio = getRadioProps({ value });
+                        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                        return (
+                          <RadioCard key={value} {...radio} isRequired>
+                            {value}
+                          </RadioCard>
+                        );
+                      }
+                    )}
+                </VStack>
+              </>
+            )}
 
-                  return (
-                    <RadioCard key={value} {...radio}>
-                      {value}
-                    </RadioCard>
-                  );
-                })}
-            </VStack>
+            {totalQuestions === indexArray ? (
+              <Button alignSelf="end" colorScheme="teal" bgColor="teal.500">
+                Finalizar
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                alignSelf="end"
+                bgColor="teal.500"
+                colorScheme="teal"
+              >
+                Proxima
+              </Button>
+            )}
           </Flex>
         </Box>
-        <Box as="section" w="94%" maxW={1200} mx="auto"></Box>
+        <Footer />
       </Flex>
     </>
   );

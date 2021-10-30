@@ -32,7 +32,6 @@ export function FormRegistration() {
 
   // Preciso arranjar uma maneiro de o usuario validar por meio do modal e depois mandar vir em handleSubmitForm
   const handleSubmitForm: SubmitHandler<InputData> = (data) => {
-    console.log("eu");
     queryQuestions(data);
   };
 
