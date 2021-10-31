@@ -78,7 +78,7 @@ export function QuestionsPage() {
 
   /* --------------------------------------------------------------------------------------------------------
     Eu estava tendo problemas em salvar as repostas do usuario la no meu contexto [userInputsContext],
-      dentro da função [handleSaveAnswers] além de setar o estado de [userAnswerQuestions] eu também mandava
+      dentro da função [handleSaveAnswers],LINHA-55, além de setar o estado de [userAnswerQuestions], eu também mandava
       as respostas para o contexto global, sendo assim sempre mandando o estado mais antigo,
       ficando de fora do contexto a ultima respota do usuario. E dessa forma causando problemas na pagina de resultado(/results),
       pois eu nao tinha em maos todas as respostas do usuario. Consegui resolver isso com useEffect.
@@ -86,10 +86,10 @@ export function QuestionsPage() {
   useEffect(() => {
     saveUserAnswersOnContext(userAnswerQuestions);
     // Quando é a ultima questao e o usuario já respondeu, é mandado para pagina [/results]
-    if (userAnswerQuestions.length == questions.length) {
+    if (userAnswerQuestions.length === questions.length) {
       history.push("/results");
     }
-  }, [userAnswerQuestions]);
+  }, [userAnswerQuestions, questions, saveUserAnswersOnContext, history]);
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   return (

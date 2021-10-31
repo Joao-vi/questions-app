@@ -15,7 +15,7 @@ export function ProgressBar() {
       >
         <TextProgressBar path="/">Registro</TextProgressBar>
         <TextProgressBar path="/questions">Perguntas</TextProgressBar>
-        <TextProgressBar path="/teste">Resultado</TextProgressBar>
+        <TextProgressBar path="/results">Resultado</TextProgressBar>
       </Flex>
     </Box>
   );

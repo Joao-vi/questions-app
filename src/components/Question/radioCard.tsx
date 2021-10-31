@@ -1,8 +1,6 @@
-import { Box, VStack } from "@chakra-ui/layout";
-import { Radio, RadioGroup, useRadio, UseRadioProps } from "@chakra-ui/radio";
+import { Box } from "@chakra-ui/layout";
+import { useRadio, UseRadioProps } from "@chakra-ui/radio";
 import { ReactNode } from "react";
-
-import styled from "@emotion/styled";
 
 interface IRadioCardProps extends UseRadioProps {
   children: ReactNode;

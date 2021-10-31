@@ -1,20 +1,29 @@
 import {
   Avatar,
   Box,
-  SimpleGrid,
   Stack,
   useColorModeValue,
   Text,
   CircularProgress,
   CircularProgressLabel,
   Grid,
-  VStack,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { userInputsContext } from "../../context/userInputsContext";
 import { ListQuestions } from "./listQuestions";
 
 export function ScoreBoard() {
+  const { userAnswerQuestions, userInputs } = useContext(userInputsContext);
+
+  const totalQuestions = userAnswerQuestions.length;
+  /* prettier-ignore */
+  const totalCorrectAnswers = userAnswerQuestions.reduce((sum, current) => {
+      if (current.userAnswer === current.correct_answer) {
+        return sum + 1;
+      } else return sum + 0;
+    },0);
+  const percentage = (100 * totalCorrectAnswers) / totalQuestions;
+
   return (
     <Box as="section" w="94%" maxW={1200} mx="auto" mb="auto">
       <Grid
@@ -32,21 +41,21 @@ export function ScoreBoard() {
           <Avatar name="João" size="lg" />
           <Box pl="1" textAlign="center">
             <Text fontSize="md" fontWeight="medium">
-              João Victor
+              {userInputs?.name}
             </Text>
             <Text fontSize="sm" pt={0}>
-              Cuiabá
+              {userInputs?.city}
             </Text>
           </Box>
           <Text as="span">
             Você acertou{" "}
             <Text as="span" fontWeight="bold" color="teal.500">
-              4
+              {totalCorrectAnswers}
             </Text>{" "}
-            de 10.
+            de {totalQuestions}.
           </Text>
-          <CircularProgress value={40} color="teal.500" size="100px">
-            <CircularProgressLabel>40%</CircularProgressLabel>
+          <CircularProgress value={percentage} color="teal.500" size="100px">
+            <CircularProgressLabel>{percentage}%</CircularProgressLabel>
           </CircularProgress>
         </Stack>
 
