@@ -4,7 +4,7 @@ usando uma API forncedida por eles para pegar as perguntas e além disso salvar 
 
 ## Tecnologias usadas
 
-### `Typescript`  `React`   `React Hook Form ` `LocalStorageAPI`
+### `Typescript`  `React`   `React Hook Form ` `LocalStorageAPI` `Axios`
 ### `Emotion`  `React Router Dom`  `ChakraUI`  `API Questions`
 
 
