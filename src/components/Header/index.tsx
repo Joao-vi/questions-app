@@ -31,7 +31,7 @@ export function Header() {
           spacing={["0", "0", "10"]}
           flexDirection={["column", "column", "row"]}
         >
-          <Heading display="inline" border="1px" borderRadius={5}>
+          <Heading display="inline" border="1px" borderRadius={5} px="1">
             Q
             <Text as="span" color="teal.300" fontSize="4xl">
               4

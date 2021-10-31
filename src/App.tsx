@@ -6,6 +6,7 @@ import { theme } from "./styles/theme";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { UserInputContextProvider } from "./context/userInputsContext";
+import { ResultsPage } from "./pages/resuts";
 
 // LocalStorage = Resultado.
 
@@ -20,6 +21,9 @@ export function App() {
           <Route path="/questions" exact>
             {/* {questions ? <QuestionsPage /> : <Redirect to="/" />} */}
             <QuestionsPage />
+          </Route>
+          <Route path="/results" exact>
+            <ResultsPage />
           </Route>
         </ChakraProvider>
       </UserInputContextProvider>

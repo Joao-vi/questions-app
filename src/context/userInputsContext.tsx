@@ -19,10 +19,20 @@ interface IQuestionType {
   incorrect_answers: [];
 }
 
+interface IUserAnswersQuestions {
+  userAnswer: string;
+  category: string;
+  question: string;
+  correct_answer: string;
+  incorrect_answers: string[];
+}
+
 type IUserInputsContext = {
   userInputs: InputData | undefined;
   questions: IQuestionType[];
   queryQuestions: SubmitHandler<InputData>;
+  userAnswerQuestions: IUserAnswersQuestions[];
+  saveUserAnswersOnContext: (answers: IUserAnswersQuestions[]) => void;
 };
 
 export const userInputsContext = createContext({} as IUserInputsContext);
@@ -36,6 +46,7 @@ export function UserInputContextProvider({children}: UserInputContextProviderPro
   const history = useHistory();
   const [userInputs, setUserInputs] = useState<InputData>();
   const [questions, setQuestions] = useState<IQuestionType[]>([]);
+  const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>([]);
 
 
   const queryQuestions: SubmitHandler<InputData> = async (userData) => {
@@ -57,15 +68,20 @@ export function UserInputContextProvider({children}: UserInputContextProviderPro
       history.push("/questions");
   };
 
+  
+  function saveUserAnswersOnContext(answers : IUserAnswersQuestions[]) {
+    setUserAnswerQuestions(answers);
+
+  }
+ 
+
+
+  
   return (
     <userInputsContext.Provider
-      value={{ questions, queryQuestions, userInputs }}
+      value={{ questions, queryQuestions, userInputs,userAnswerQuestions,saveUserAnswersOnContext }}
     >
       {children}
     </userInputsContext.Provider>
   );
 }
-
-/*
-
-*/

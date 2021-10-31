@@ -1,6 +1,6 @@
 /* prettier-ignore */
 import {Box,Flex,useColorModeValue,Text,useRadioGroup,VStack,Button,} from "@chakra-ui/react";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 
 import { userInputsContext } from "../context/userInputsContext";
 
@@ -8,6 +8,7 @@ import { Header } from "../components/Header";
 import { ProgressBar } from "../components/ProgressBar";
 import { RadioCard } from "../components/Question/radioCard";
 import { Footer } from "../components/Footer";
+import { useHistory } from "react-router";
 
 interface IUserAnswersQuestions {
   category: string;
@@ -18,11 +19,13 @@ interface IUserAnswersQuestions {
 }
 
 export function QuestionsPage() {
-  const { questions } = useContext(userInputsContext);
+  const { questions, saveUserAnswersOnContext } = useContext(userInputsContext);
   /* prettier-ignore */
   const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<string>("");
   const [indexArray, setIndexArray] = useState(0);
+
+  const history = useHistory();
 
   const totalQuestions = questions.length - 1;
 
@@ -33,12 +36,14 @@ export function QuestionsPage() {
 
   const group = getRootProps();
 
-  //--------------------------------------------------------------------------------------------------------
+  /*--------------------------------------------------------------------------------------------------------
 
-  // Essa funçao é responsavel por armazenar a escolha de resposta atual em um estado.
-  // Ela é ativada na [linha 37], toda vez que o usuario escolhe outra resposta armazenamos sua respota em um estado
-  // para posteriormente salvarmos em [--handleSelectedAnswer--].
+   Essa funçao [handleSelectedAnswer] é responsavel por armazenar a escolha de resposta atual em um estado.
+   Ela é ativada na [linha 34], toda vez que o usuario escolhe outra resposta armazenamos sua respota em um estado
+   para posteriormente salvarmos em [handleSaveAnswers].
 
+
+  */
   function handleSelectedAnswer(selectAnswer: string) {
     setCurrentAnswer(selectAnswer);
   }
@@ -49,9 +54,10 @@ export function QuestionsPage() {
 
   function handleSaveAnswers(event: FormEvent<HTMLDivElement>) {
     event.preventDefault();
-
-    // Assim que usuario clica em confirmar salvamos a resposta em [userAnswer] e com ela os dados da pergunta,
-    // depois fazemos um spred(...) pra salvar as respostas anteriores. Se nao iria sobrepor as repostas no estado.
+    /* 
+       Assim que usuario clica em confirmar salvamos a resposta em [userAnswerQuestions] e com ela os dados da pergunta,
+       depois fazemos um spred(...) pra salvar as respostas anteriores. Se nao iria sobrepor as repostas no estado.
+    */
     setUserAnswerQuestions([
       {
         userAnswer: currentAnswer,
@@ -63,14 +69,28 @@ export function QuestionsPage() {
       ...userAnswerQuestions,
     ]);
 
-    // Depois que salvei a respota da pergunta, mando para seguir para proxima questao usando o estado indexArray
+    // Depois que salvei a respota da pergunta, mando para seguir para proxima questao usando o estado [indexArray]
     if (indexArray < totalQuestions) {
       setIndexArray((oldState) => oldState + 1);
     }
   }
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  console.log(userAnswerQuestions);
+  /* --------------------------------------------------------------------------------------------------------
+    Eu estava tendo problemas em salvar as repostas do usuario la no meu contexto [userInputsContext],
+      dentro da função [handleSaveAnswers] além de setar o estado de [userAnswerQuestions] eu também mandava
+      as respostas para o contexto global, sendo assim sempre mandando o estado mais antigo,
+      ficando de fora do contexto a ultima respota do usuario. E dessa forma causando problemas na pagina de resultado(/results),
+      pois eu nao tinha em maos todas as respostas do usuario. Consegui resolver isso com useEffect.
+  */
+  useEffect(() => {
+    saveUserAnswersOnContext(userAnswerQuestions);
+    // Quando é a ultima questao e o usuario já respondeu, é mandado para pagina [/results]
+    if (userAnswerQuestions.length == questions.length) {
+      history.push("/results");
+    }
+  }, [userAnswerQuestions]);
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   return (
     <>
@@ -119,7 +139,12 @@ export function QuestionsPage() {
             )}
 
             {totalQuestions === indexArray ? (
-              <Button alignSelf="end" colorScheme="teal" bgColor="teal.500">
+              <Button
+                type="submit"
+                alignSelf="end"
+                colorScheme="teal"
+                bgColor="teal.500"
+              >
                 Finalizar
               </Button>
             ) : (
