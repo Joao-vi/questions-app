@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useHistory } from "react-router";
 import { api } from "../services/api";
@@ -43,10 +43,16 @@ type UserInputContextProviderProps = {
 
 /* prettier-ignore */
 export function UserInputContextProvider({children}: UserInputContextProviderProps) {
+  /*
+    Aqui tive que tratar a respota do localStorage pois estava dando conflitos de tipagem com o typescript.
+  */
+  const userInputsJson = localStorage.getItem('userInputs');
+  const userInputsParse = userInputsJson ? JSON.parse(userInputsJson || '{}') : undefined  
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   const history = useHistory();
-  const [userInputs, setUserInputs] = useState<InputData>();
+  const [userInputs, setUserInputs] = useState<InputData >(userInputsParse);
   const [questions, setQuestions] = useState<IQuestionType[]>([]);
-  const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>([]);
+  const [userAnswerQuestions, setUserAnswerQuestions] = useState<IUserAnswersQuestions[]>(JSON.parse(localStorage.getItem('userAnswerQuestions')||'[]'));
 
 
   const queryQuestions: SubmitHandler<InputData> = async (userData) => {
@@ -74,6 +80,10 @@ export function UserInputContextProvider({children}: UserInputContextProviderPro
 
   }
  
+  useEffect(()=>{
+    localStorage.setItem('userAnswerQuestions',JSON.stringify(userAnswerQuestions))
+    localStorage.setItem('userInputs',JSON.stringify(userInputs || {}))
+  },[userAnswerQuestions,userInputs])
 
 
   
@@ -85,3 +95,6 @@ export function UserInputContextProvider({children}: UserInputContextProviderPro
     </userInputsContext.Provider>
   );
 }
+
+// const [userInputs, setUserInputs] = useState<InputData>(JSON.parse(localStorage.getItem('userInputs')||'undefined'));
+// JSON.parse(localStorage.getItem('userAnswerQuestions')||'[]')
