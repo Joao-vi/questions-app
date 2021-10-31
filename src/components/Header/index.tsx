@@ -39,7 +39,7 @@ export function Header() {
             Y
           </Heading>
           <Heading fontSize={["24px", "28px", "32px"]}>
-            Question for You.
+            Questions for You.
           </Heading>
         </HStack>
         <HStack borderLeft="1px" pl="4" borderColor="gray.500" spacing="3">

@@ -1,12 +1,5 @@
-import {
-  Box,
-  Flex,
-  HStack,
-  Text,
-  IconButton,
-  Icon,
-  useColorModeValue,
-} from "@chakra-ui/react";
+/* prettier-ignore */
+import {Box,Flex,HStack,Text,IconButton,Icon,useColorModeValue,Link} from "@chakra-ui/react";
 
 import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
@@ -23,18 +16,23 @@ export function Footer() {
       <Flex alignItems="center" justifyContent="center" flexDir="column">
         <Text as="p">Feito por João.</Text>
         <HStack color="gray.500" spacing="3" fontSize="24px" mt="2">
-          <IconButton
-            bgColor="teal.400"
-            aria-label="Perfil GitHub"
-            colorScheme="teal"
-            icon={<Icon as={AiFillGithub} />}
-          />
-          <IconButton
-            aria-label="Perfil LinkedIn"
-            bgColor="teal.400"
-            colorScheme="teal"
-            icon={<Icon as={AiFillLinkedin} />}
-          />
+          <Link href="https://github.com/Joao-vi" isExternal>
+            <IconButton
+              bgColor="teal.400"
+              aria-label="Perfil GitHub"
+              colorScheme="teal"
+              icon={<Icon as={AiFillGithub} />}
+            />
+          </Link>
+
+          <Link href="https://www.linkedin.com/in/joao-vi/" isExternal>
+            <IconButton
+              aria-label="Perfil LinkedIn"
+              bgColor="teal.400"
+              colorScheme="teal"
+              icon={<Icon as={AiFillLinkedin} />}
+            />
+          </Link>
           <IconButton
             bgColor="teal.400"
             aria-label="Endereço de e-mail"

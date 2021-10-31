@@ -22,7 +22,8 @@ export function ScoreBoard() {
         return sum + 1;
       } else return sum + 0;
     },0);
-  const percentage = (100 * totalCorrectAnswers) / totalQuestions;
+  const percentage = Math.round((100 * totalCorrectAnswers) / totalQuestions);
+  debugger;
   return (
     <Box as="section" w="94%" maxW={1200} mx="auto" mb="auto">
       <Grid

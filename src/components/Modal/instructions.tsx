@@ -30,7 +30,7 @@ export function InstructionsModal() {
               <Text as="span" color="teal.400" fontWeight="bold">
                 Qtd. Questões
               </Text>
-              , é aqui onde você escolher quantas questões deseja responder em
+              , é aqui onde você escolhe quantas questões deseja responder em
               nosso questionário. <br />{" "}
               <Text
                 as="span"

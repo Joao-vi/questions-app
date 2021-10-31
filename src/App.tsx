@@ -11,19 +11,20 @@ import { ResultsPage } from "./pages/resuts";
 // LocalStorage = Resultado.
 
 export function App() {
+  /* prettier-ignore */
+  const isLocalData = JSON.parse(localStorage.getItem("userAnswerQuestions")|| '[]')
   return (
     <Router>
       <UserInputContextProvider>
         <ChakraProvider theme={theme}>
           <Route path="/" exact>
-            {localStorage.getItem("userAnswerQuestions") ? (
+            {isLocalData.length > 0 ? (
               <Redirect to="/results" />
             ) : (
               <SignInPage />
             )}
           </Route>
           <Route path="/questions" exact>
-            {/* {questions ? <QuestionsPage /> : <Redirect to="/" />} */}
             <QuestionsPage />
           </Route>
           <Route path="/results" exact>

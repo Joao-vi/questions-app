@@ -45,7 +45,7 @@ export function CheckNumberQuestionsModal({children,isOpen = false,}: ICheckNumb
           Aviso
         </Text>
         <Text>
-          Presado participante, por favor verificar o campo{" "}
+          Prezado participante, por favor verificar o campo{" "}
           <Text as="span" fontWeight="bold" color="teal.500">
             Qtd. Questions
           </Text>{" "}
