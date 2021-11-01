@@ -1,5 +1,16 @@
-# Getting Started with Create React App
+# Questions4You
+A ideia desse projeto surgiu de um processo seletivo para uma vaga de Dev. Front-end Jr., foi me dado a tarefa de construir uma aplicação sobre questionarios sobre temas gerais,
+usando uma API forncedida por eles para pegar as perguntas e além disso salvar o resultado em LocalStorage.
 
+## Tecnologias usadas
+
+### `Typescript`  `React`   `React Hook Form` `LocalStorageAPI` `Axios`
+### `Emotion`  `React Router Dom`  `ChakraUI`  `API Questions`
+
+
+
+
+## Instruções para usar esse projeto
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
