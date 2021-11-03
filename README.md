@@ -10,7 +10,12 @@ usando uma API forncedida por eles para pegar as perguntas e além disso salvar 
 ## Teste aqui:
 https://questions4y.web.app/
 
+## Fotos: 
+![1](https://user-images.githubusercontent.com/83383626/140099618-96c099ed-2339-4741-ae4b-cfacfaa87c54.png)
 
+![2](https://user-images.githubusercontent.com/83383626/140099643-053ec357-1cda-430b-8812-1dd7a19fc423.png)
+
+![3](https://user-images.githubusercontent.com/83383626/140099732-a241a768-3b21-4614-a3e9-183678b1fde0.png)
 
 ## Instruções para usar esse projeto
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
